@@ -1,1 +1,3 @@
-### Automatic Email Delivery Service Using Flask
+# Auto-Email
+Periodic Email Delivery Service built with Flask. 
+Deployed with Render

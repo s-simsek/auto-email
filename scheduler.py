@@ -56,6 +56,9 @@ def scheduled_email_job():
 
 if __name__ == '__main__':
     scheduler = BlockingScheduler()
-    scheduler.add_job(scheduled_email_job, 'interval', hours=24)
+    scheduler.add_job(scheduled_email_job, 
+                      'interval',
+                      hours=24, 
+                      next_run_time=datetime.datetime.now() + datetime.timedelta(seconds=5))
     print("Scheduler started...")
     scheduler.start()

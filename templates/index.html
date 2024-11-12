@@ -1,19 +1,26 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sent Emails Log</title>
+    <title>Sent Emails</title>
 </head>
 <body>
-    <h1>Log of Sent Emails</h1>
-    <ul>
+    <h1>Sent Emails</h1>
+    <table border="1">
+        <tr>
+            <th>Time Sent</th>
+            <th>Subject</th>
+            <th>Body</th>
+            <th>Recipient</th>
+        </tr>
         {% for email in emails %}
-            <li><strong>Sent At:</strong> {{ email.time }}<br>
-                <strong>To:</strong> {{ email.to_email }}<br>
-                <strong>Subject:</strong> {{ email.subject }}<br>
-                <strong>Body:</strong> {{ email.body }}</li>
+        <tr>
+            <td>{{ email.time_sent }}</td>
+            <td>{{ email.subject }}</td>
+            <td>{{ email.body }}</td>
+            <td>{{ email.to_email }}</td>
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
 </body>
 </html>

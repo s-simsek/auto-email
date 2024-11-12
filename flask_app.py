@@ -44,12 +44,12 @@ def scheduled_email_job():
 
 @app.route('/')
 def index():
+    scheduler = BackgroundScheduler(daemon=True)
+    scheduler.add_job(scheduled_email_job, 'interval', minutes=1)
+    scheduler.start()
     with emails_sent_lock:
         emails_copy = list(emails_sent)  # Make a copy to release the lock early
     return render_template('index.html', emails=emails_copy)
 
 if __name__ == '__main__':
-    scheduler = BackgroundScheduler(daemon=True)
-    scheduler.add_job(scheduled_email_job, 'interval', minutes=1)
-    scheduler.start()
     app.run(debug=True, use_reloader=False)  # use_reloader=False is important to not interfere with APScheduler

@@ -22,7 +22,7 @@ body = (
     + womens_winner
     + "\n\nBest regards,\nSafak Simsek"
 )
-to_email = "safaksimsek5@berkeley.edu" #adrian@lechterventures.com
+to_email = "adrian@lechterventures.com" 
 from_email = "safaksimsek05@gmail.com"
 
 # Define the path to the JSON file and lock file

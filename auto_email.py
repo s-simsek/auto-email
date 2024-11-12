@@ -1,43 +1,40 @@
 import os
 import smtplib
-import time
 from email.message import EmailMessage
 
-import schedule
 from dotenv import load_dotenv
+
+from get_data import get_data
 
 load_dotenv()
 
-APP_PASSWORD = os.getenv('APP_PASSWORD')
-def send_email(subject, body, to_email, from_email, password):
+mens_winner, womens_winner = get_data()
+
+subject = "NHD Contest Winner Announcement"
+body = "Dear Adrian \n\nThe winner of the 2024 Nathan's Hot Dog Eating Contest is: \n\nMEN'S WINNER: " + \
+        mens_winner + "\nWOMEN'S WINNER: " + womens_winner + "\n\nBest regards,\nSafak Simsek"
+to_email = "safaksimsek5@berkeley.edu"
+from_email = "safaksimsek05@gmail.com"
+
+
+def send_email(body, subject, to_email, from_email):
+    password = os.getenv('APP_PASSWORD')
     msg = EmailMessage()
     msg.set_content(body)
     msg['Subject'] = subject
     msg['From'] = from_email
     msg['To'] = to_email
 
-    # Use SMTP server for Gmail (modify if you use another service)
-    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-    server.login(from_email, password)
-    server.send_message(msg)
-    server.quit()
-    print("Email sent!")
-
-def job():
-    # Define your email details
-    subject = "Let's try to send an email"
-    body = "Here's your update every 2 minutes."
-    to_email = "safaksimsek5@berkeley.edu"
-    from_email = "safaksimsek05@gmail.com"
-    password = APP_PASSWORD # It's better to use environment variables or input this securely
-
-    send_email(subject, body, to_email, from_email, password)
-
-if __name__ == "__main__":
-    # Schedule the job every 2 minutes
-    schedule.every(2).minutes.do(job)
-
-    # Keep the script running
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+    try:
+        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+        print("Connected to SMTP server.")
+        server.login(from_email, password)
+        print("Logged in to SMTP server.")
+        server.send_message(msg)
+        print("Email sent.")
+        server.quit()
+        print("Disconnected from SMTP server.")
+        return "Success"
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+        return str(e)

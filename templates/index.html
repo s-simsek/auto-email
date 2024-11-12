@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sent Emails Log</title>
+</head>
+<body>
+    <h1>Log of Sent Emails</h1>
+    <ul>
+        {% for email in emails %}
+            <li><strong>Sent At:</strong> {{ email.time }}<br>
+                <strong>To:</strong> {{ email.to_email }}<br>
+                <strong>Subject:</strong> {{ email.subject }}<br>
+                <strong>Body:</strong> {{ email.body }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

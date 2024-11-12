@@ -17,7 +17,7 @@ mens_winner, womens_winner = get_data()
 subject = "NHD Contest Winner Announcement"
 body = "Dear Adrian, \n\nThe winner of the 2024 Nathan's Hot Dog Eating Contest is: \n\nMEN'S WINNER: " + \
         mens_winner + "\nWOMEN'S WINNER: " + womens_winner + "\n\nBest regards,\nSafak Simsek"
-to_email = "safaksimsek5@berkeley.edu"
+to_email = "defne@dayioglu.com"
 from_email = "safaksimsek05@gmail.com"
 
 # Storage for email details

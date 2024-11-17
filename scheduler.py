@@ -13,24 +13,16 @@ from get_data import get_data
 load_dotenv()
 
 # Prepare email content
-mens_winner, womens_winner = get_data()
-subject = "NHD Contest Winner Announcement"
-body = (
-    "Dear Adrian, \n\nThe winner of the 2024 Nathan's Hot Dog Eating Contest is: \n\nMEN'S WINNER: "
-    + mens_winner
-    + "\nWOMEN'S WINNER: "
-    + womens_winner
-    + "\n\nBest regards,\nSafak Simsek"
-)
-to_email = "adrian@lechterventures.com" 
-from_email = "safaksimsek05@gmail.com"
+winners = get_data()
+subject = "Nobel Physics 2024 Laureates"
+body = ("The winner(s) of the 2024 Nobel Physics Laureate is: {}".format(winners))
 
 # Define the path to the JSON file and lock file
 EMAILS_FILE = 'emails.json'
 LOCK_FILE = 'emails.lock'
 
 def scheduled_email_job():
-    status = send_email(body, subject, to_email, from_email)
+    status = send_email(body, subject, os.getenv('TO_EMAIL'), os.getenv('FROM_EMAIL'))
     if status == "Success":
         print(f"Email sent successfully at {datetime.datetime.now()}")
         # Save email record to the JSON file
@@ -38,7 +30,7 @@ def scheduled_email_job():
             "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "subject": subject,
             "body": body,
-            "to_email": to_email
+            "to_email": os.getenv('TO_EMAIL')
         }
         # Use file lock to ensure safe write operation
         lock = FileLock(LOCK_FILE)

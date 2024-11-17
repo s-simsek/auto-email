@@ -3,28 +3,30 @@ import pandas as pd
 
 def get_data():
     # get data from wikipedia
-    data = pd.read_html("https://en.wikipedia.org/wiki/Nathan's_Hot_Dog_Eating_Contest")
+    data = pd.read_html("https://en.wikipedia.org/wiki/List_of_Nobel_laureates")
 
     # choose correct dataframe
-    df = data[2]
+    df = data[0]
 
-    # rename columns and choosing the right columns
-    df.rename(columns={'Winner (and date, if prior to permanently moving all contests to Independence Day in 1997)': 'winner'}, inplace=True)
-    df = df[['winner', 'Year']]
-
-    # clean data and add a gender column
-    df_clean = df[df['winner'].str.contains("MEN'S") | df['winner'].str.contains("WOMEN'S")][['winner', 'Year']]
-    df_clean['gender'] = df_clean['winner'].apply(lambda x: x.split(' ')[0])
-    df_clean['winner'] = df_clean['winner'].apply(lambda x: ' '.join(x.split(' ')[1:]))
+    # Function to check if a value is an integer
+    def is_integer(s):
+        try:
+            int(s)
+            return True
+        except ValueError:
+            return False
+     
+    # Filter and convert       
+    df['Year'] = df['Year'].apply(lambda x: int(x) if is_integer(x) else None)
+    df.dropna(subset=['Year'], inplace=True)
+    df['Year'] = df['Year'].astype(int)
 
     # find the most recent year
-    max_year = df_clean['Year'].max()
+    max_year = df['Year'].max()
 
-    # find the most recent winner for each gender
-    mens_winner = df_clean[(df_clean['Year'] == max_year) & (df_clean['gender'] == "MEN'S")]['winner'].values[0]
-    womens_winner = df_clean[(df_clean['Year'] == max_year) & (df_clean['gender'] == "WOMEN'S")]['winner'].values[0]
+    winners = df[df.Year == max_year]['Physics'].iloc[0]
 
-    return mens_winner, womens_winner
+    return winners
 
 
 
